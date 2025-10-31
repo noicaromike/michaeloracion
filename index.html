@@ -87,24 +87,24 @@
           <h2 id="contact-head">Contact</h2>
           <p class="section-lead">Available for freelance & contract work. Send a message below.</p>
 
-          <form id="contactForm" class="contact-form" novalidate>
+          <form id="contactForm" class="contact-form" action="contact.php" method="POST">
             <div class="form-row">
-              <label for="name">Name</label>
-              <input id="name" name="name" type="text" required>
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" required>
             </div>
             <div class="form-row">
-              <label for="email">Email</label>
-              <input id="email" name="email" type="email" required>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" required>
             </div>
             <div class="form-row">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" required></textarea>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
             </div>
             <div class="form-actions">
-              <button type="submit" class="btn-primary">Send message</button>
-              <div id="contactStatus" class="muted" aria-live="polite"></div>
+                <button type="submit" class="btn-primary">Send message</button>
+                <div id="contactStatus" class="muted" aria-live="polite"></div>
             </div>
-          </form>
+            </form>
         </div>
       </section>
 

@@ -320,3 +320,34 @@ document.addEventListener("DOMContentLoaded", () => {
     buildGrid();
   })();
 });
+
+// php mail
+document
+  .getElementById("contactForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const status = document.getElementById("contactStatus");
+
+    const formData = new FormData(form);
+
+    status.textContent = "Sending...";
+
+    try {
+      const response = await fetch("contact.php", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.text();
+
+      if (result.trim() === "success") {
+        status.textContent = "✅ Message sent successfully!";
+        form.reset();
+      } else {
+        status.textContent = "❌ Error sending message. Please try again.";
+      }
+    } catch (err) {
+      status.textContent = "⚠️ Could not connect to server.";
+    }
+  });
