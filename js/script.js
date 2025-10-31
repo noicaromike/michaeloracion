@@ -1,200 +1,322 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Demo project data
-  const projects = [
-    {id:1,title:'Landing — Product',tags:['web','ui'],img:'https://picsum.photos/seed/p1/800/500',desc:'A modern landing page for a SaaS product with subtle motion.' ,url:'#'},
-    {id:2,title:'E‑commerce UI',tags:['web','ui'],img:'https://picsum.photos/seed/p2/800/500',desc:'Shop UI design and microinteraction prototypes.' ,url:'#'},
-    {id:3,title:'Motion Experiments',tags:['motion'],img:'https://picsum.photos/seed/p3/800/500',desc:'GSAP driven scroll and hero animations.' ,url:'#'},
-    {id:4,title:'Portfolio Revamp',tags:['web','ui','motion'],img:'https://picsum.photos/seed/p4/800/500',desc:'Personal portfolio redesign with rich interactions.' ,url:'#'},
-    {id:5,title:'Prototype App',tags:['ui'],img:'https://picsum.photos/seed/p5/800/500',desc:'High-fidelity prototypes for mobile apps.' ,url:'#'}
-  ];
-
-  const grid = document.getElementById('projectsGrid');
-  const overlay = document.getElementById('overlay');
-  const modal = document.getElementById('modal');
-  const closeBtn = document.getElementById('closeModal');
-
-  // responsive nav elements
-  const menuToggle = document.querySelector('.menu-toggle');
-  const navList = document.querySelector('.nav-list');
-
+document.addEventListener("DOMContentLoaded", () => {
+  const menuToggle = document.querySelector(".menu-toggle");
+  const navList = document.querySelector(".nav-list");
   if (menuToggle && navList) {
-    menuToggle.addEventListener('click', (e) => {
-      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-      menuToggle.setAttribute('aria-expanded', String(!isOpen));
-      navList.classList.toggle('open', !isOpen);
+    menuToggle.addEventListener("click", () => {
+      const isOpen = menuToggle.getAttribute("aria-expanded") === "true";
+      menuToggle.setAttribute("aria-expanded", String(!isOpen));
+      navList.classList.toggle("open", !isOpen);
     });
-
-    // close menu when a link is clicked
-    navList.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        menuToggle.setAttribute('aria-expanded', 'false');
-        navList.classList.remove('open');
-      });
-    });
-
-    // click outside to close
-    document.addEventListener('click', (e) => {
+    navList.querySelectorAll("a").forEach((a) =>
+      a.addEventListener("click", () => {
+        if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
+        navList.classList.remove("open");
+      })
+    );
+    document.addEventListener("click", (e) => {
       if (!navList.contains(e.target) && !menuToggle.contains(e.target)) {
-        menuToggle.setAttribute('aria-expanded', 'false');
-        navList.classList.remove('open');
+        if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
+        navList.classList.remove("open");
       }
     });
   }
 
-  let lastFocused = null;
+  function runSplash() {
+    const splash = document.getElementById("splash");
+    const splashPercent = document.getElementById("splashPercent");
+    const splashFill = document.getElementById("splashFill");
+    document.body.classList.add("no-scroll");
 
-  function setAriaOpen(isOpen) {
-    overlay.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-    modal.setAttribute('aria-hidden', isOpen ? 'false' : 'true');
-  }
-
-  function disableBodyScroll() {
-    document.body.style.overflow = 'hidden';
-  }
-  function enableBodyScroll() {
-    document.body.style.overflow = '';
-  }
-
-  function trapFocus(container) {
-    const focusable = container.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (!first) return () => {};
-    function handleTab(e) {
-      if (e.key !== 'Tab') return;
-      if (e.shiftKey) {
-        if (document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        }
-      } else {
-        if (document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    }
-    document.addEventListener('keydown', handleTab);
-    return () => document.removeEventListener('keydown', handleTab);
-  }
-
-  function openModal(project) {
-    // populate content
-    document.getElementById('modalTitle').textContent = project.title;
-    document.getElementById('modalTags').textContent = project.tags.join(' · ');
-    document.getElementById('modalDesc').textContent = project.desc;
-    document.getElementById('modalLink').href = project.url || '#';
-    const imgWrap = document.getElementById('modalImage');
-    imgWrap.innerHTML = `<img src="${project.img}" alt="${project.title}" style="width:100%;height:100%;object-fit:cover;display:block">`;
-
-    // show overlay/modal
-    overlay.style.display = 'flex';
-    setAriaOpen(true);
-    disableBodyScroll();
-
-    // animation (if GSAP available)
     if (window.gsap) {
-      gsap.killTweensOf([overlay, modal]);
-      gsap.fromTo(overlay, {autoAlpha:0}, {autoAlpha:1, duration:0.25});
-      gsap.fromTo(modal, {y:18, autoAlpha:0}, {y:0, autoAlpha:1, duration:0.35, ease:'power3.out'});
-    }
-
-    // focus management
-    lastFocused = document.activeElement;
-    modal.focus();
-    // trap focus, keep handle to remove when closing
-    modal._removeTrap = trapFocus(modal);
-  }
-
-  function closeModal() {
-    // close animation
-    if (window.gsap) {
-      gsap.to(modal, {y:8, autoAlpha:0, duration:0.18, ease:'power2.in'});
-      gsap.to(overlay, {autoAlpha:0, duration:0.2, onComplete: finishClose});
+      const obj = { n: 0 };
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      tl.to(obj, {
+        n: 100,
+        duration: 1.6,
+        roundProps: "n",
+        onUpdate() {
+          if (splashPercent) splashPercent.textContent = obj.n + "%";
+          if (splashFill) splashFill.style.width = obj.n + "%";
+        },
+      });
+      tl.to(
+        ".splash-name",
+        { scale: 1.04, duration: 0.28, yoyo: true, repeat: 1 },
+        ">-0.08"
+      );
+      tl.to(
+        splash,
+        {
+          autoAlpha: 0,
+          y: -18,
+          duration: 0.45,
+          onComplete() {
+            if (splash && splash.parentNode)
+              splash.parentNode.removeChild(splash);
+            document.body.classList.remove("no-scroll");
+          },
+        },
+        ">-0.06"
+      );
     } else {
-      finishClose();
+      let n = 0;
+      const t = setInterval(() => {
+        n += 5;
+        if (n > 100) n = 100;
+        if (splashPercent) splashPercent.textContent = n + "%";
+        if (splashFill) splashFill.style.width = n + "%";
+        if (n >= 100) {
+          clearInterval(t);
+          setTimeout(() => {
+            if (splash && splash.parentNode)
+              splash.parentNode.removeChild(splash);
+            document.body.classList.remove("no-scroll");
+          }, 300);
+        }
+      }, 60);
     }
   }
 
-  function finishClose() {
-    overlay.style.display = 'none';
-    setAriaOpen(false);
-    enableBodyScroll();
-    if (modal._removeTrap) {
-      modal._removeTrap();
-      modal._removeTrap = null;
-    }
-    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-  }
+  // Animate hero (uses GSAP if available, CSS fallback otherwise)
+  function animateHero() {
+    const hero = document.querySelector("section.hero");
+    if (!hero) return;
 
-  // build grid
-  function buildGrid(list) {
-    grid.innerHTML = '';
-    list.forEach(p => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.dataset.id = p.id;
-      card.innerHTML = `
-        <div class="thumb"><img src="${p.img}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;display:block"></div>
-        <div class="card-body">
-          <h4>${p.title}</h4>
-          <p>${p.tags.join(' · ')}</p>
-        </div>
-      `;
-      card.addEventListener('click', () => openModal(p));
-      grid.appendChild(card);
-    });
+    // prefer GSAP timeline for smooth staggered entrance
     if (window.gsap) {
-      gsap.from('.card', {opacity:0, y:20, duration:0.6, stagger:0.08, ease:'power2.out'});
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+      tl.fromTo(
+        ".hero-left",
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 }
+      );
+      tl.fromTo(
+        ".hero-right",
+        { y: 14, opacity: 0, scale: 0.98 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.7 },
+        "-=0.38"
+      );
+      // subtle floating of profile-card (non-intrusive)
+      const card = document.querySelector(".profile-card");
+      if (card)
+        gsap.to(card, {
+          y: -6,
+          duration: 3.8,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 0.6,
+        });
+    } else {
+      // fallback: add class that triggers CSS transitions
+      document.documentElement.classList.add("hero-animate");
+      const card = document.querySelector(".profile-card");
+      if (card) card.classList.add("float");
     }
   }
 
-  // overlay click: only close when clicking backdrop (not modal)
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) closeModal();
-  });
+  // run splash only on reload
+  let navType = "navigate";
+  try {
+    const entries =
+      performance.getEntriesByType &&
+      performance.getEntriesByType("navigation");
+    if (entries && entries.length) navType = entries[0].type || navType;
+    else if (performance.navigation && performance.navigation.type === 1)
+      navType = "reload";
+  } catch (e) {}
 
-  // close button
-  closeBtn.addEventListener('click', closeModal);
+  if (navType === "reload") {
+    // ensure hero animates after splash completes
+    const originalRunSplash = runSplash;
+    // wrap runSplash to call animateHero after completion
+    function runSplashAndAnimate() {
+      const splash = document.getElementById("splash");
+      // call original; it will remove splash and un-lock scroll on complete
+      originalRunSplash();
+      // small timeout to let removal finish then animate
+      setTimeout(animateHero, 450);
+    }
+    runSplashAndAnimate();
+  } else {
+    const splashImmediate = document.getElementById("splash");
+    if (splashImmediate && splashImmediate.parentNode)
+      splashImmediate.parentNode.removeChild(splashImmediate);
+    document.body.classList.remove("no-scroll");
+    // animate immediately when no splash sequence ran
+    setTimeout(animateHero, 80);
+  }
 
-  // escape key
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && overlay.style.display === 'flex') closeModal();
-  });
+  // Morphing background: CSS handles most of it; tweak CSS vars with GSAP if available
+  (function initMorphBg() {
+    const root = document.documentElement;
+    if (window.gsap) {
+      const tl = gsap.timeline({ repeat: -1, yoyo: true });
+      tl.to(root, {
+        duration: 10,
+        ease: "sine.inOut",
+        "--h1": 210,
+        "--h2": 320,
+        "--pos1-x": 30,
+        "--pos1-y": 20,
+        "--pos2-x": 70,
+        "--pos2-y": 80,
+      });
+      tl.to(
+        root,
+        {
+          duration: 12,
+          ease: "sine.inOut",
+          "--h1": 280,
+          "--h2": 200,
+          "--pos1-x": 12,
+          "--pos1-y": 50,
+          "--pos2-x": 88,
+          "--pos2-y": 40,
+        },
+        ">-0.4"
+      );
+    } else {
+      root.style.setProperty("--h1", "200");
+      root.style.setProperty("--h2", "260");
+    }
+  })();
 
-  // filters
-  document.querySelectorAll('.filter').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      const f = btn.dataset.filter;
-      if (f === 'all') buildGrid(projects);
-      else buildGrid(projects.filter(p => p.tags.includes(f)));
-    });
-  });
+  // append project data, grid builder, modal and contact handling
+  (() => {
+    const projects = [
+      {
+        id: 1,
+        title: "Interactive Dashboard",
+        img: "https://picsum.photos/seed/p1/900/600",
+        desc: "Responsive dashboard with performant data viz and smooth interactions.",
+        url: "#",
+      },
+      {
+        id: 2,
+        title: "Micro-interactions Library",
+        img: "https://picsum.photos/seed/p2/900/600",
+        desc: "Reusable micro-interactions using vanilla JS and GSAP.",
+        url: "#",
+      },
+      {
+        id: 3,
+        title: "Animated Landing",
+        img: "https://picsum.photos/seed/p3/900/600",
+        desc: "High-performance landing with progressive image loading and motion.",
+        url: "#",
+      },
+      {
+        id: 4,
+        title: "Accessible Forms",
+        img: "https://picsum.photos/seed/p4/900/600",
+        desc: "Form UX with ARIA, validation and keyboard-first design.",
+        url: "#",
+      },
+    ];
 
-  // new project
-  const newBtn = document.getElementById('new-project');
-  if (newBtn) {
-    newBtn.addEventListener('click', () => {
-      const id = projects.length + 1;
-      const sample = {id, title:'New Project ' + id, tags:['web'], img:`https://picsum.photos/seed/p${id}/800/500`, desc:'New project placeholder', url:'#'};
-      projects.unshift(sample);
-      buildGrid(projects);
-      const firstCard = document.querySelector('.card');
-      if (firstCard && window.gsap) {
-        gsap.fromTo(firstCard, {scale:0.96, boxShadow:'0 0 0 rgba(0,0,0,0)'}, {scale:1, boxShadow:'0 12px 40px rgba(0,0,0,0.35)', duration:0.5});
+    function buildGrid() {
+      const grid = document.getElementById("projectsGrid");
+      if (!grid) return;
+      grid.innerHTML = "";
+      projects.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "card";
+        card.innerHTML = `
+          <a class="card-link" href="#" data-id="${p.id}">
+            <div class="card-media" style="background-image:url('${p.img}')"></div>
+            <div class="card-body">
+              <h3 class="card-title">${p.title}</h3>
+              <div class="card-desc">${p.desc}</div>
+            </div>
+          </a>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function openModal(project) {
+      const modal = document.getElementById("projectModal");
+      if (!modal) return;
+      document.getElementById("modalTitle").textContent = project.title;
+      const imgEl = document.getElementById("modalImg");
+      imgEl.style.backgroundImage = `url('${project.img}')`;
+      document.getElementById("modalDesc").textContent = project.desc;
+      const link = document.getElementById("modalLink");
+      link.href = project.url;
+      modal.classList.remove("hidden");
+      // animate modal with GSAP if available
+      if (window.gsap) {
+        gsap.fromTo(
+          ".modal-panel",
+          { y: 20, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.45, ease: "power3.out" }
+        );
+      }
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("projectModal");
+      if (!modal) return;
+      modal.classList.add("hidden");
+    }
+
+    // delegate clicks on project cards
+    document.addEventListener("click", (e) => {
+      const link = e.target.closest(".card-link");
+      if (link) {
+        e.preventDefault();
+        const id = Number(link.dataset.id);
+        const proj = projects.find((p) => p.id === id);
+        if (proj) openModal(proj);
+      }
+      if (
+        e.target.matches("[data-dismiss='modal']") ||
+        e.target.closest(".modal-close")
+      ) {
+        closeModal();
       }
     });
-  }
 
-  // initial build
-  buildGrid(projects);
+    // keyboard close modal
+    document.addEventListener("keydown", (e) => {
+      const modal = document.getElementById("projectModal");
+      if (e.key === "Escape" && modal && !modal.classList.contains("hidden"))
+        closeModal();
+    });
 
-  // scroll-triggered animations (if GSAP available)
-  if (window.gsap && window.ScrollTrigger) {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.from('.hero-left', {x:-30, opacity:0, duration:0.7, scrollTrigger:{trigger:'.hero', start:'top 90%'}});
-    gsap.from('.hero-right', {x:30, opacity:0, duration:0.7, scrollTrigger:{trigger:'.hero', start:'top 90%'}});
-  }
+    // contact form handling (client-side only)
+    const form = document.getElementById("contactForm");
+    if (form) {
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const status = document.getElementById("contactStatus");
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const message = form.message.value.trim();
+        if (!name || !email || !message) {
+          status.textContent = "Please complete all fields.";
+          return;
+        }
+        // simple email check
+        if (!/^\S+@\S+\.\S+$/.test(email)) {
+          status.textContent = "Please provide a valid email.";
+          return;
+        }
+        status.textContent = "Sending...";
+        // simulate send
+        setTimeout(() => {
+          status.textContent = "Message sent — I will reply soon. (Demo only)";
+          form.reset();
+        }, 900);
+      });
+    }
+
+    // set current year in footer
+    const yearEl = document.getElementById("year");
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    // build project grid and trigger simple reveal
+    buildGrid();
+  })();
 });

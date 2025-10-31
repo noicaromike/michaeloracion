@@ -5,103 +5,128 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Michael Oracion</title>
   <link rel="stylesheet" href="css/style.css">
-  <!-- GSAP CDN -->
+  <link rel="shortcut icon" href="img/mikeG.jpg" type="image/x-icon">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
-  
+  <script src="js/script.js" defer></script>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <div class="avatar">MO</div>
-      <div>
-        <h1>Michael Oracion</h1>
-        <div style="font-size:12px;color:var(--muted)">Frontend & UI — GSAP, HTML/CSS, JS</div>
-      </div>
-    </div>
+  <div class="morph-bg" aria-hidden="true"></div>
 
-    <!-- responsive nav: menu toggle + link list -->
-    <nav class="site-nav" aria-label="Main navigation">
-      <button class="menu-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle menu">☰</button>
-
-      <ul id="mainNav" class="nav-list">
-        <li><a href="#about">About</a></li>
-        <li><a href="#projects" class="active">Projects</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero">
-      <div class="hero-left">
-        <div class="eyebrow">Selected projects</div>
-        <h2 class="title">Project portfolio — experimental interactions & micro-animations</h2>
-        <p class="lead">A compact showcase built with modern HTML, CSS, vanilla JS and GSAP animations — interactive project cards with modal previews and scroll-triggered effects.</p>
-      </div>
-      <aside class="hero-right">
-        <div class="stats">
-          <div class="stat">
-            <h3>24</h3>
-            <p>Projects</p>
-          </div>
-          <div class="stat">
-            <h3>8</h3>
-            <p>Clients</p>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <div class="controls">
-      <div>Filter:</div>
-      <button class="filter active" data-filter="all">All</button>
-      <button class="filter" data-filter="web">Web</button>
-      <button class="filter" data-filter="ui">UI</button>
-      <button class="filter" data-filter="motion">Motion</button>
-      <div style="flex:1"></div>
-      <button id="new-project" class="filter">+ New Project</button>
-    </div>
-
-    <section class="grid" id="projectsGrid">
-      <!-- JS will populate cards -->
-    </section>
-
-  </main>
-
-  <div class="overlay" id="overlay" aria-hidden="true">
-    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1" aria-hidden="true">
-      <div class="modal-head">
-        <div>
-          <h3 id="modalTitle">Project title</h3>
-          <div style="color:var(--muted);font-size:13px" id="modalTags">Web · UI</div>
-        </div>
-        <div>
-          <button class="close" id="closeModal">Close ✕</button>
-        </div>
-      </div>
-      <div class="modal-main">
-        <div class="left">
-          <div id="modalImage" style="height:300px;background:#081226;border-radius:8px;overflow:hidden;margin-bottom:12px">Image</div>
-          <p id="modalDesc" style="color:var(--muted)">Project description goes here. Replace with your full description, links and images.</p>
-        </div>
-        <div class="right">
-          <div style="background:var(--glass);padding:12px;border-radius:10px">Details
-            <div style="margin-top:10px;color:var(--muted);font-size:13px">Role: Frontend</div>
-            <div style="margin-top:6px;color:var(--muted);font-size:13px">Stack: HTML, CSS, JS, GSAP</div>
-            <div style="margin-top:6px;color:var(--muted);font-size:13px">Year: 2025</div>
-            <a id="modalLink" href="#" target="_blank" style="display:inline-block;margin-top:10px">View live</a>
-          </div>
+  <div class="page-content">
+    <div id="splash" class="splash" role="status" aria-live="polite">
+      <div class="splash-inner">
+        <div class="splash-name">Michael Oracion</div>
+        <div class="splash-loader" aria-hidden="true">
+          <div id="splashPercent" class="splash-percent">0%</div>
+          <div class="splash-bar"><div id="splashFill" class="splash-bar-fill"></div></div>
         </div>
       </div>
     </div>
+
+    <header>
+      <div class="header-inner">
+        <a href="index.html" class="logo" aria-label="Home">
+          <div class="avatar">MO</div>
+          <div>
+            <h1>Michael Oracion</h1>
+            <div class="tagline">Frontend & UI — GSAP, HTML/CSS, JS</div>
+          </div>
+        </a>
+
+        <nav class="site-nav" aria-label="Main navigation">
+          <button class="menu-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle menu">☰</button>
+          <ul id="mainNav" class="nav-list">
+            <li><a href="#projects" class="nav-link">Projects</a></li>
+            <li><a href="#contact" class="nav-link">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="home">
+      <section class="hero" aria-label="Intro — Web Developer">
+        <div class="hero-left">
+          <div class="eyebrow">Hi, I'm Michael — Web Developer</div>
+          <h1 class="title">I build fast, accessible & animated web experiences</h1>
+          <p class="lead">Frontend engineer focused on performant UI, micro‑interactions and polished user flows. I use HTML, modern CSS, vanilla JS and GSAP to craft production‑ready interfaces.</p>
+          <div class="cta-row">
+            <a href="#projects" class="btn-primary">See my work</a>
+            <a href="#contact" class="btn-ghost">Contact</a>
+          </div>
+          <div class="chips">
+            <div class="chip">JavaScript</div>
+            <div class="chip">HTML &amp; CSS</div>
+            <div class="chip">GSAP</div>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-hidden="true">
+          <div class="profile-card">
+            <img src="img/mikeG.jpg" alt="Michael Oracion" class="profile-img">
+            <div class="profile-info">
+              <div class="name">Currently not Available</div>
+              <div class="muted">Full-Stack Developer At BizBox Inc</div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="projects-section" aria-labelledby="projects-head">
+        <div class="section-inner">
+          <h2 id="projects-head">Selected Projects</h2>
+          <p class="section-lead">Interactive UI, animated flows and performant front-end builds.</p>
+
+          <div id="projectsGrid" class="grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="contact-section" aria-labelledby="contact-head">
+        <div class="section-inner">
+          <h2 id="contact-head">Contact</h2>
+          <p class="section-lead">Available for freelance & contract work. Send a message below.</p>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="form-row">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" required>
+            </div>
+            <div class="form-row">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required>
+            </div>
+            <div class="form-row">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Send message</button>
+              <div id="contactStatus" class="muted" aria-live="polite"></div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <footer class="site-footer">
+        <div class="section-inner">
+          <div class="footer-left">© <span id="year"></span> Michael Oracion</div>
+          <div class="footer-right">Built with HTML, CSS, JS & GSAP</div>
+        </div>
+      </footer>
+    </main>
   </div>
 
-  <footer>
-    © Michael Oracion — Built with HTML, CSS, JS & GSAP
-  </footer>
-
-  <!-- replace inline script with external file -->
-  <script src="js/script.js" defer></script>
+  <!-- Project modal -->
+  <div id="projectModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" data-dismiss="modal"></div>
+    <div class="modal-panel" role="document">
+      <button class="modal-close" aria-label="Close project" data-dismiss="modal">✕</button>
+      <h3 id="modalTitle"></h3>
+      <div id="modalImg" class="modal-img" aria-hidden="true"></div>
+      <p id="modalDesc"></p>
+      <a id="modalLink" class="btn-primary" target="_blank" rel="noopener">View project</a>
+    </div>
+  </div>
 </body>
 </html>
