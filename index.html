@@ -1,11 +1,107 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Michael Oracion</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Michael Oracion</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js" defer></script>
+  
 </head>
 <body>
-    
+  <header>
+    <div class="logo">
+      <div class="avatar">MO</div>
+      <div>
+        <h1>Michael Oracion</h1>
+        <div style="font-size:12px;color:var(--muted)">Frontend & UI — GSAP, HTML/CSS, JS</div>
+      </div>
+    </div>
+
+    <!-- responsive nav: menu toggle + link list -->
+    <nav class="site-nav" aria-label="Main navigation">
+      <button class="menu-toggle" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle menu">☰</button>
+
+      <ul id="mainNav" class="nav-list">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects" class="active">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-left">
+        <div class="eyebrow">Selected projects</div>
+        <h2 class="title">Project portfolio — experimental interactions & micro-animations</h2>
+        <p class="lead">A compact showcase built with modern HTML, CSS, vanilla JS and GSAP animations — interactive project cards with modal previews and scroll-triggered effects.</p>
+      </div>
+      <aside class="hero-right">
+        <div class="stats">
+          <div class="stat">
+            <h3>24</h3>
+            <p>Projects</p>
+          </div>
+          <div class="stat">
+            <h3>8</h3>
+            <p>Clients</p>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="controls">
+      <div>Filter:</div>
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="web">Web</button>
+      <button class="filter" data-filter="ui">UI</button>
+      <button class="filter" data-filter="motion">Motion</button>
+      <div style="flex:1"></div>
+      <button id="new-project" class="filter">+ New Project</button>
+    </div>
+
+    <section class="grid" id="projectsGrid">
+      <!-- JS will populate cards -->
+    </section>
+
+  </main>
+
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1" aria-hidden="true">
+      <div class="modal-head">
+        <div>
+          <h3 id="modalTitle">Project title</h3>
+          <div style="color:var(--muted);font-size:13px" id="modalTags">Web · UI</div>
+        </div>
+        <div>
+          <button class="close" id="closeModal">Close ✕</button>
+        </div>
+      </div>
+      <div class="modal-main">
+        <div class="left">
+          <div id="modalImage" style="height:300px;background:#081226;border-radius:8px;overflow:hidden;margin-bottom:12px">Image</div>
+          <p id="modalDesc" style="color:var(--muted)">Project description goes here. Replace with your full description, links and images.</p>
+        </div>
+        <div class="right">
+          <div style="background:var(--glass);padding:12px;border-radius:10px">Details
+            <div style="margin-top:10px;color:var(--muted);font-size:13px">Role: Frontend</div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px">Stack: HTML, CSS, JS, GSAP</div>
+            <div style="margin-top:6px;color:var(--muted);font-size:13px">Year: 2025</div>
+            <a id="modalLink" href="#" target="_blank" style="display:inline-block;margin-top:10px">View live</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    © Michael Oracion — Built with HTML, CSS, JS & GSAP
+  </footer>
+
+  <!-- replace inline script with external file -->
+  <script src="js/script.js" defer></script>
 </body>
 </html>
